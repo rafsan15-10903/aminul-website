@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aminul's Wedding Ceremony</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f7f7fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 500px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            padding: 32px 24px 24px 24px;
+        }
+        h1 {
+            text-align: center;
+            color: #2d3a4b;
+            margin-bottom: 8px;
+        }
+        p {
+            text-align: center;
+            color: #6c7a89;
+            margin-top: 0;
+        }
+        form {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            justify-content: center;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+        button {
+            background: #4f8cff;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 18px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        .guest-list {
+            margin-top: 16px;
+        }
+        .guest-list h2 {
+            font-size: 1.1rem;
+            color: #2d3a4b;
+            margin-bottom: 8px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: #f1f5f9;
+            margin-bottom: 6px;
+            padding: 8px 12px;
+            border-radius: 4px;
+            color: #374151;
+        }
+        .count {
+            text-align: right;
+            color: #4f8cff;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body style="background: #ffe4ec;">
+    <div class="container" style="background:#ff9800;border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,0.08);padding:32px 24px 24px 24px;max-width:500px;margin:40px auto;">
+        <h1 style="color:#fff;">Aminul's Wedding Ceremony</h1>
+        <p style="color:#fff;">Invite your guests and keep track of everyone you invite!</p>
+        <form id="guestForm">
+            <input type="text" id="guestName" placeholder="Enter guest name" required />
+            <button type="submit">Save</button>
+        </form>
+        <button id="resetBtn" style="display:block;margin:0 auto 18px auto;background:#ef4444;">Reset All</button>
+        <div class="guest-list">
+            <h2 style="color:#fff;">Invited Guests:</h2>
+            <ul id="guestList"></ul>
+            <div class="count" style="color:#fff;">Total Invited: <span id="guestCount">0</span></div>
+        </div>
+        <!-- Relatives' Families Section -->
+        <div class="family-section" style="margin-top:36px;">
+            <h2 style="color:#fff;">Family for invitation</h2>
+            <form id="familyForm" style="display:flex;gap:12px;margin-bottom:18px;">
+                <input type="text" id="familyName" placeholder="Enter family name" required />
+                <button type="submit">Save Family</button>
+            </form>
+            <button id="resetFamilyBtn" style="display:block;margin:0 auto 18px auto;background:#ef4444;">Reset Family Data</button>
+            <ul id="familyList"></ul>
+            <div class="count" id="familyCount" style="margin-top:8px;text-align:right;color:#fff;font-weight:bold;"></div>
+            <div class="count" id="invitedFamilyCount" style="margin-top:2px;text-align:right;color:#fff;font-weight:bold;"></div>
+            <div id="invitedFamilyList" style="margin-top:10px;"></div>
+        </div>
+        <!-- Budget Section -->
+        <div class="budget-section" style="margin-top:36px;">
+            <h2 style="color:#fff;">Budget Planning</h2>
+            <form id="budgetForm" style="display:flex;gap:12px;margin-bottom:18px;">
+                <input type="text" id="budgetName" placeholder="Spending category (e.g. Venue, Food)" required />
+                <input type="number" id="budgetAmount" placeholder="Amount" min="0" required style="max-width:120px;" />
+                <button type="submit">Save Budget</button>
+            </form>
+            <ul id="budgetList"></ul>
+            <div class="count" id="budgetTotal" style="margin-top:8px;text-align:right;color:#fff;font-weight:bold;"></div>
+        </div>
+            <!-- Shopping To-Do List Section -->
+            <div class="shopping-section" style="margin-top:36px;">
+                <h2 style="color:#2d3a4b;">Shopping To-Do List</h2>
+                <form id="shoppingForm" style="display:flex;gap:12px;margin-bottom:18px;">
+                    <input type="text" id="shoppingItem" placeholder="Item to buy" required style="flex:1;" />
+                    <input type="number" id="shoppingAmount" placeholder="Amount" min="0" style="max-width:120px;" />
+                    <button type="submit">Save Item</button>
+                </form>
+                <ul id="shoppingList"></ul>
+            </div>
+    <!-- Gift/Money Received Section -->
+    <div class="gift-section" style="margin-top:36px;">
+        <h2 style="color:#2d3a4b;">Gifts & Money Received</h2>
+        <form id="giftForm" style="display:flex;gap:12px;margin-bottom:18px;">
+            <input type="text" id="giftName" placeholder="Person's name" required />
+                <input type="text" id="giftAmount" placeholder="Amount & Gift" required style="max-width:140px;" />
+            <button type="submit">Save</button>
+        </form>
+        <ul id="giftList"></ul>
+            <div class="count" id="moneyTotal" style="margin-top:8px;text-align:right;color:#fff;font-weight:bold;"></div>
+            <div class="count" id="giftTotal" style="margin-top:2px;text-align:right;color:#fff;font-weight:bold;"></div>
+    </div>
+    <script>
+        // Gift/Money Received logic
+        const giftForm = document.getElementById('giftForm');
+        const giftNameInput = document.getElementById('giftName');
+        const giftAmountInput = document.getElementById('giftAmount');
+        const giftList = document.getElementById('giftList');
+
+        let gifts = JSON.parse(localStorage.getItem('gifts') || '[]');
+
+        function renderGifts() {
+            giftList.innerHTML = '';
+            let moneyTotal = 0;
+            let giftCount = 0;
+            gifts.forEach((item, idx) => {
+                const li = document.createElement('li');
+                li.style.display = 'flex';
+                li.style.alignItems = 'center';
+                li.style.justifyContent = 'space-between';
+                li.style.background = '#f1f5f9';
+                li.style.marginBottom = '6px';
+                li.style.padding = '8px 12px';
+                li.style.borderRadius = '4px';
+
+                // Numbering
+                const numberSpan = document.createElement('span');
+                numberSpan.textContent = (idx + 1) + '.';
+                numberSpan.style.marginRight = '12px';
+                li.appendChild(numberSpan);
+
+                // Name
+                const nameSpan = document.createElement('span');
+                nameSpan.textContent = item.name;
+                nameSpan.style.flex = '1';
+                li.appendChild(nameSpan);
+
+                // Amount or Gift
+                const amountSpan = document.createElement('span');
+                amountSpan.textContent = item.amount;
+                amountSpan.style.marginLeft = '16px';
+                li.appendChild(amountSpan);
+
+                // If amount is a number, add to moneyTotal, else count as gift
+                let numeric = parseFloat(item.amount.replace(/[^\d.\-]/g, ''));
+                if (!isNaN(numeric) && item.amount.match(/^\s*\d/)) {
+                    moneyTotal += numeric;
+                } else {
+                    giftCount++;
+                }
+
+                // Remove button
+                const removeBtn = document.createElement('button');
+                removeBtn.textContent = 'Remove';
+                removeBtn.style.background = '#ef4444';
+                removeBtn.style.color = '#fff';
+                removeBtn.style.border = 'none';
+                removeBtn.style.borderRadius = '4px';
+                removeBtn.style.padding = '3px 10px';
+                removeBtn.style.cursor = 'pointer';
+                removeBtn.onclick = function() {
+                    gifts.splice(idx, 1);
+                    localStorage.setItem('gifts', JSON.stringify(gifts));
+                    renderGifts();
+                };
+                li.appendChild(removeBtn);
+
+                giftList.appendChild(li);
+            });
+            document.getElementById('moneyTotal').textContent = 'Total Money: ৳ ' + moneyTotal.toLocaleString();
+            document.getElementById('giftTotal').textContent = 'Total Gifts: ' + giftCount;
+        }
+
+        giftForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = giftNameInput.value.trim();
+            const amount = giftAmountInput.value.trim();
+            if (name && amount) {
+                gifts.push({ name, amount });
+                localStorage.setItem('gifts', JSON.stringify(gifts));
+                renderGifts();
+                giftNameInput.value = '';
+                giftAmountInput.value = '';
+                giftNameInput.focus();
+            }
+        });
+
+        renderGifts();
+        // Budget logic
+        const budgetForm = document.getElementById('budgetForm');
+        const budgetNameInput = document.getElementById('budgetName');
+        const budgetAmountInput = document.getElementById('budgetAmount');
+        const budgetList = document.getElementById('budgetList');
+        const budgetTotal = document.getElementById('budgetTotal');
+
+        let budgets = JSON.parse(localStorage.getItem('budgets') || '[]');
+
+        function renderBudgets() {
+            budgetList.innerHTML = '';
+            let total = 0;
+            budgets.forEach((item, idx) => {
+                const li = document.createElement('li');
+                li.style.display = 'flex';
+                li.style.alignItems = 'center';
+                li.style.justifyContent = 'space-between';
+                li.style.background = '#f1f5f9';
+                li.style.marginBottom = '6px';
+                li.style.padding = '8px 12px';
+                li.style.borderRadius = '4px';
+
+                const nameSpan = document.createElement('span');
+                nameSpan.textContent = item.name;
+                nameSpan.style.flex = '1';
+                li.appendChild(nameSpan);
+
+                const amountSpan = document.createElement('span');
+                amountSpan.textContent = '৳ ' + parseFloat(item.amount).toLocaleString();
+                amountSpan.style.marginRight = '16px';
+                li.appendChild(amountSpan);
+
+                // Remove button
+                const removeBtn = document.createElement('button');
+                removeBtn.textContent = 'Remove';
+                removeBtn.style.background = '#ef4444';
+                removeBtn.style.color = '#fff';
+                removeBtn.style.border = 'none';
+                removeBtn.style.borderRadius = '4px';
+                removeBtn.style.padding = '3px 10px';
+                removeBtn.style.cursor = 'pointer';
+                removeBtn.onclick = function() {
+                    budgets.splice(idx, 1);
+                    localStorage.setItem('budgets', JSON.stringify(budgets));
+                    renderBudgets();
+                        // Shopping To-Do List logic
+                        const shoppingForm = document.getElementById('shoppingForm');
+                        const shoppingItemInput = document.getElementById('shoppingItem');
+                        const shoppingAmountInput = document.getElementById('shoppingAmount');
+                        const shoppingList = document.getElementById('shoppingList');
+
+                        let shopping = JSON.parse(localStorage.getItem('shopping') || '[]');
+
+                        function renderShopping() {
+                            shoppingList.innerHTML = '';
+                            shopping.forEach((item, idx) => {
+                                const li = document.createElement('li');
+                                li.style.display = 'flex';
+                                li.style.alignItems = 'center';
+                                li.style.justifyContent = 'space-between';
+                                li.style.background = item.done ? '#22c55e' : '#f1f5f9';
+                                li.style.marginBottom = '6px';
+                                li.style.padding = '8px 12px';
+                                li.style.borderRadius = '4px';
+
+                                // Mark/Unmark button
+                                const markBtn = document.createElement('button');
+                                markBtn.textContent = item.done ? '✔' : 'Mark';
+                                markBtn.style.background = item.done ? '#22c55e' : '#d1d5db';
+                                markBtn.style.color = item.done ? '#fff' : '#374151';
+                                markBtn.style.border = 'none';
+                                markBtn.style.borderRadius = '4px';
+                                markBtn.style.padding = '3px 10px';
+                                markBtn.style.marginRight = '10px';
+                                markBtn.style.cursor = 'pointer';
+                                markBtn.onclick = function() {
+                                    shopping[idx].done = !shopping[idx].done;
+                                    localStorage.setItem('shopping', JSON.stringify(shopping));
+                                    renderShopping();
+                                };
+                                li.appendChild(markBtn);
+
+                                // Item name
+                                const nameSpan = document.createElement('span');
+                                nameSpan.textContent = item.name;
+                                nameSpan.style.flex = '1';
+                                nameSpan.style.marginLeft = '8px';
+                                nameSpan.style.textDecoration = item.done ? 'line-through' : 'none';
+                                nameSpan.style.color = item.done ? '#fff' : '#374151';
+                                li.appendChild(nameSpan);
+
+                                // Amount
+                                const amountSpan = document.createElement('span');
+                                if (item.amount) {
+                                    amountSpan.textContent = '৳ ' + parseFloat(item.amount).toLocaleString();
+                                }
+                                amountSpan.style.marginLeft = '16px';
+                                amountSpan.style.color = item.done ? '#fff' : '#374151';
+                                li.appendChild(amountSpan);
+
+                                // Remove button
+                                const removeBtn = document.createElement('button');
+                                removeBtn.textContent = 'Remove';
+                                removeBtn.style.background = '#ef4444';
+                                removeBtn.style.color = '#fff';
+                                removeBtn.style.border = 'none';
+                                removeBtn.style.borderRadius = '4px';
+                                removeBtn.style.padding = '3px 10px';
+                                removeBtn.style.cursor = 'pointer';
+                                removeBtn.onclick = function() {
+                                    shopping.splice(idx, 1);
+                                    localStorage.setItem('shopping', JSON.stringify(shopping));
+                                    renderShopping();
+                                };
+                                li.appendChild(removeBtn);
+
+                                shoppingList.appendChild(li);
+                            });
+                        }
+
+                        shoppingForm.addEventListener('submit', function(e) {
+                            e.preventDefault();
+                            const name = shoppingItemInput.value.trim();
+                            const amount = shoppingAmountInput.value.trim();
+                            if (name) {
+                                shopping.push({ name, amount, done: false });
+                                localStorage.setItem('shopping', JSON.stringify(shopping));
+                                renderShopping();
+                                shoppingItemInput.value = '';
+                                shoppingAmountInput.value = '';
+                                shoppingItemInput.focus();
+                            }
+                        });
+
+                        renderShopping();
+                };
+                li.appendChild(removeBtn);
+
+                budgetList.appendChild(li);
+                total += parseFloat(item.amount) || 0;
+            });
+            budgetTotal.textContent = 'Total Budget: ৳ ' + total.toLocaleString();
+        }
+
+        budgetForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = budgetNameInput.value.trim();
+            const amount = budgetAmountInput.value.trim();
+            if (name && amount && !isNaN(amount)) {
+                budgets.push({ name, amount: parseFloat(amount) });
+                localStorage.setItem('budgets', JSON.stringify(budgets));
+                renderBudgets();
+                budgetNameInput.value = '';
+                budgetAmountInput.value = '';
+                budgetNameInput.focus();
+            }
+        });
+
+        renderBudgets();
+        const guestForm = document.getElementById('guestForm');
+        const guestNameInput = document.getElementById('guestName');
+        const guestList = document.getElementById('guestList');
+        const guestCount = document.getElementById('guestCount');
+
+        // Load guests from localStorage
+        let guests = JSON.parse(localStorage.getItem('guests') || '[]');
+
+
+        function renderGuests() {
+            guestList.innerHTML = '';
+            guests.forEach((name, idx) => {
+                const li = document.createElement('li');
+                li.textContent = name;
+                // Add remove button
+                const removeBtn = document.createElement('button');
+                removeBtn.textContent = 'Remove';
+                removeBtn.style.marginLeft = '12px';
+                removeBtn.style.background = '#ef4444';
+                removeBtn.style.color = '#fff';
+                removeBtn.style.border = 'none';
+                removeBtn.style.borderRadius = '4px';
+                removeBtn.style.padding = '3px 10px';
+                removeBtn.style.cursor = 'pointer';
+                removeBtn.onclick = function() {
+                    guests.splice(idx, 1);
+                    localStorage.setItem('guests', JSON.stringify(guests));
+                    renderGuests();
+                };
+                li.appendChild(removeBtn);
+                guestList.appendChild(li);
+            });
+            guestCount.textContent = guests.length;
+        }
+
+        guestForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = guestNameInput.value.trim();
+            if (name) {
+                guests.push(name);
+                localStorage.setItem('guests', JSON.stringify(guests));
+                renderGuests();
+                guestNameInput.value = '';
+                guestNameInput.focus();
+            }
+        });
+
+        // Reset all guests
+        document.getElementById('resetBtn').onclick = function() {
+            if (confirm('Are you sure you want to reset all guests?')) {
+                guests = [];
+                localStorage.removeItem('guests');
+                renderGuests();
+            }
+        };
+
+        // Initial render
+        renderGuests();
+
+        // Family logic
+        const familyForm = document.getElementById('familyForm');
+        const familyNameInput = document.getElementById('familyName');
+        const familyList = document.getElementById('familyList');
+
+        let families = JSON.parse(localStorage.getItem('families') || '[]');
+
+        function renderFamilies() {
+            familyList.innerHTML = '';
+            let invitedFamilies = [];
+            families.forEach((family, idx) => {
+                const li = document.createElement('li');
+                li.style.display = 'flex';
+                li.style.alignItems = 'center';
+                li.style.justifyContent = 'space-between';
+
+                // Family name
+                const nameSpan = document.createElement('span');
+                nameSpan.textContent = family.name;
+                nameSpan.style.flex = '1';
+                li.appendChild(nameSpan);
+
+                // Green mark toggle button
+                const markBtn = document.createElement('button');
+                markBtn.textContent = family.invited ? '✔' : 'Mark Invited';
+                markBtn.style.background = family.invited ? '#22c55e' : '#d1d5db';
+                markBtn.style.color = family.invited ? '#fff' : '#374151';
+                markBtn.style.border = 'none';
+                markBtn.style.borderRadius = '4px';
+                markBtn.style.padding = '3px 10px';
+                markBtn.style.marginRight = '10px';
+                markBtn.style.cursor = 'pointer';
+                markBtn.onclick = function() {
+                    families[idx].invited = !families[idx].invited;
+                    localStorage.setItem('families', JSON.stringify(families));
+                    renderFamilies();
+                };
+                li.appendChild(markBtn);
+
+                // Remove button
+                const removeBtn = document.createElement('button');
+                removeBtn.textContent = 'Remove';
+                removeBtn.style.background = '#ef4444';
+                removeBtn.style.color = '#fff';
+                removeBtn.style.border = 'none';
+                removeBtn.style.borderRadius = '4px';
+                removeBtn.style.padding = '3px 10px';
+                removeBtn.style.cursor = 'pointer';
+                removeBtn.onclick = function() {
+                    families.splice(idx, 1);
+                    localStorage.setItem('families', JSON.stringify(families));
+                    renderFamilies();
+                };
+                li.appendChild(removeBtn);
+
+                familyList.appendChild(li);
+                if (family.invited) invitedFamilies.push(family.name);
+            });
+            // Show total number of families
+            document.getElementById('familyCount').textContent = 'Total Families: ' + families.length;
+            document.getElementById('invitedFamilyCount').textContent = 'Invited Families: ' + invitedFamilies.length;
+            // Show invited family list
+            document.getElementById('invitedFamilyList').innerHTML = invitedFamilies.length
+                ? '<span style="color:#fff;font-weight:500;">Invited: </span>' + invitedFamilies.map(f => '<span style="background:#22c55e;color:#fff;padding:2px 10px;border-radius:8px;margin:0 4px;display:inline-block;">' + f + '</span>').join('')
+                : '';
+        }
+
+        familyForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = familyNameInput.value.trim();
+            if (name) {
+                families.push({ name, invited: false });
+                localStorage.setItem('families', JSON.stringify(families));
+                renderFamilies();
+                familyNameInput.value = '';
+                familyNameInput.focus();
+            }
+        });
+
+        // Convert old string array to object array if needed
+        if (families.length && typeof families[0] === 'string') {
+            families = families.map(name => ({ name, invited: false }));
+            localStorage.setItem('families', JSON.stringify(families));
+        }
+
+        // Reset all families
+        document.getElementById('resetFamilyBtn').onclick = function() {
+            if (confirm('Are you sure you want to reset all family data?')) {
+                families = [];
+                localStorage.removeItem('families');
+                renderFamilies();
+            }
+        };
+
+        renderFamilies();
+    </script>
+    <div style="width:100%;display:flex;justify-content:center;margin:48px 0 24px 0;">
+        <a href="first.html" style="
+            background: linear-gradient(90deg, #e75480 0%, #f8bbd0 100%);
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 14px 38px;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            box-shadow: 0 2px 12px #eec3d6;
+            letter-spacing: 1px;
+            transition: background 0.2s, box-shadow 0.2s;
+        " onmouseover="this.style.background='#e75480';this.style.boxShadow='0 4px 18px #eec3d6';" onmouseout="this.style.background='linear-gradient(90deg, #e75480 0%, #f8bbd0 100%)';this.style.boxShadow='0 2px 12px #eec3d6';">
+            GO TO HOME
+        </a>
+    </div>
+</body>
+</html>
