@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Saved Data Sheet</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f7f7fa; margin: 0; padding: 0; }
         .container { max-width: 700px; margin: 40px auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); padding: 32px 24px 24px 24px; }
@@ -68,6 +69,7 @@
             <div class="count" id="giftTotal"></div>
         </section>
         <button class="download-btn" onclick="downloadSheet()">Download as PDF</button>
+    <div id="downloadError" style="display:none;color:#ef4444;text-align:center;margin-top:16px;font-weight:bold;"></div>
     </div>
 
     <div style="width:100%;display:flex;justify-content:center;margin:32px 0 48px 0;">
@@ -143,6 +145,14 @@
 
     // Download as PDF
     function downloadSheet() {
+        var errorDiv = document.getElementById('downloadError');
+        errorDiv.style.display = 'none';
+        // Check if jsPDF is loaded
+        if (!window.jspdf || !window.jspdf.jsPDF) {
+            errorDiv.textContent = 'PDF download is not supported on this device or browser. Please try updating your browser or use a desktop.';
+            errorDiv.style.display = 'block';
+            return;
+        }
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
         let y = 10;
