@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saved Data Sheet</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f7f7fa; margin: 0; padding: 0; }
+        .container { max-width: 700px; margin: 40px auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); padding: 32px 24px 24px 24px; }
+        h1 { text-align: center; color: #2d3a4b; margin-bottom: 24px; }
+        section { margin-bottom: 32px; }
+        h2 { color: #4f8cff; margin-bottom: 10px; font-size: 1.3rem; }
+        ul { list-style: none; padding: 0; }
+        li { background: #f1f5f9; margin-bottom: 6px; padding: 8px 12px; border-radius: 4px; color: #374151; font-size: 1.05rem; }
+        .count { color: #4f8cff; font-weight: bold; margin-top: 8px; font-size: 1.02rem; }
+        .download-btn { display: block; margin: 32px auto 0 auto; background: #4f8cff; color: #fff; border: none; border-radius: 8px; padding: 14px 38px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: background 0.2s; }
+        .download-btn:hover { background: #2563eb; }
+        @media (max-width: 900px) {
+            .container { max-width: 98vw; margin: 24px 1vw; padding: 18px 4vw 18px 4vw; }
+            h1 { font-size: 1.3rem; }
+            h2 { font-size: 1.08rem; }
+            li, .count { font-size: 0.98rem; }
+            .download-btn { font-size: 1rem; padding: 12px 18px; }
+        }
+        @media (max-width: 600px) {
+            .container { padding: 8px 2vw 8px 2vw; }
+            h1 { font-size: 1.05rem; }
+            h2 { font-size: 0.98rem; }
+            li, .count { font-size: 0.95rem; }
+            .download-btn { font-size: 0.95rem; padding: 10px 8px; }
+        }
+        @media (max-width: 430px) {
+            .container { padding: 4px 1vw 4px 1vw; }
+            h1 { font-size: 0.95rem; }
+            h2 { font-size: 0.9rem; }
+            li, .count { font-size: 0.9rem; }
+            .download-btn { font-size: 0.9rem; padding: 8px 4px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Saved Data Sheet</h1>
+        <section id="guestsSection">
+            <h2>Invited Guests</h2>
+            <ul id="guestsList"></ul>
+            <div class="count" id="guestsCount"></div>
+        </section>
+        <section id="familiesSection">
+            <h2>Families for Invitation</h2>
+            <ul id="familiesList"></ul>
+            <div class="count" id="familiesCount"></div>
+            <div class="count" id="invitedFamiliesCount"></div>
+        </section>
+        <section id="budgetsSection">
+            <h2>Budget Planning</h2>
+            <ul id="budgetsList"></ul>
+            <div class="count" id="budgetsTotal"></div>
+        </section>
+        <section id="shoppingSection">
+            <h2>Shopping To-Do List</h2>
+            <ul id="shoppingList"></ul>
+        </section>
+        <section id="giftsSection">
+            <h2>Gifts & Money Received</h2>
+            <ul id="giftsList"></ul>
+            <div class="count" id="moneyTotal"></div>
+            <div class="count" id="giftTotal"></div>
+        </section>
+        <button class="download-btn" onclick="downloadSheet()">Download as PDF</button>
+    </div>
+
+    <div style="width:100%;display:flex;justify-content:center;margin:32px 0 48px 0;">
+        <a href="first.html" style="
+            background: linear-gradient(90deg, #e75480 0%, #f8bbd0 100%);
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 14px 38px;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            box-shadow: 0 2px 12px #eec3d6;
+            letter-spacing: 1px;
+            transition: background 0.2s, box-shadow 0.2s;
+        " onmouseover="this.style.background='#e75480';this.style.boxShadow='0 4px 18px #eec3d6';" onmouseout="this.style.background='linear-gradient(90deg, #e75480 0%, #f8bbd0 100%)';this.style.boxShadow='0 2px 12px #eec3d6';">
+            GO TO HOME
+        </a>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+    // Load and render all data from localStorage
+    function renderSheet() {
+        // Guests
+        const guests = JSON.parse(localStorage.getItem('guests') || '[]');
+        const guestsList = document.getElementById('guestsList');
+        guestsList.innerHTML = guests.map(name => `<li>${name}</li>`).join('');
+        document.getElementById('guestsCount').textContent = 'Total Invited: ' + guests.length;
+
+        // Families
+        let families = JSON.parse(localStorage.getItem('families') || '[]');
+        if (families.length && typeof families[0] === 'string') {
+            families = families.map(name => ({ name, invited: false }));
+        }
+        const familiesList = document.getElementById('familiesList');
+        familiesList.innerHTML = families.map(f => `<li>${f.name}${f.invited ? ' (Invited)' : ''}</li>`).join('');
+        document.getElementById('familiesCount').textContent = 'Total Families: ' + families.length;
+        const invited = families.filter(f => f.invited);
+        document.getElementById('invitedFamiliesCount').textContent = 'Invited Families: ' + invited.length;
+
+        // Budgets
+        const budgets = JSON.parse(localStorage.getItem('budgets') || '[]');
+        const budgetsList = document.getElementById('budgetsList');
+        let totalBudget = 0;
+        budgetsList.innerHTML = budgets.map(b => {
+            totalBudget += parseFloat(b.amount) || 0;
+            return `<li>${b.name}: ৳ ${parseFloat(b.amount).toLocaleString()}</li>`;
+        }).join('');
+        document.getElementById('budgetsTotal').textContent = 'Total Budget: ৳ ' + totalBudget.toLocaleString();
+
+        // Shopping
+        const shopping = JSON.parse(localStorage.getItem('shopping') || '[]');
+        const shoppingList = document.getElementById('shoppingList');
+        shoppingList.innerHTML = shopping.map(s => `<li>${s.name}${s.amount ? ': ৳ ' + parseFloat(s.amount).toLocaleString() : ''}${s.done ? ' (Done)' : ''}</li>`).join('');
+
+        // Gifts
+        const gifts = JSON.parse(localStorage.getItem('gifts') || '[]');
+        const giftsList = document.getElementById('giftsList');
+        let moneyTotal = 0, giftCount = 0;
+        giftsList.innerHTML = gifts.map(g => {
+            let numeric = parseFloat(g.amount.replace(/[^\d.\-]/g, ''));
+            if (!isNaN(numeric) && g.amount.match(/^\s*\d/)) {
+                moneyTotal += numeric;
+            } else {
+                giftCount++;
+            }
+            return `<li>${g.name}: ${g.amount}</li>`;
+        }).join('');
+        document.getElementById('moneyTotal').textContent = 'Total Money: ৳ ' + moneyTotal.toLocaleString();
+        document.getElementById('giftTotal').textContent = 'Total Gifts: ' + giftCount;
+    }
+    renderSheet();
+
+    // Download as PDF
+    function downloadSheet() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        let y = 10;
+        function addSection(title, items, total) {
+            doc.setFontSize(14);
+            doc.text(title, 10, y);
+            y += 8;
+            doc.setFontSize(11);
+            items.forEach(item => {
+                doc.text(item, 14, y);
+                y += 7;
+            });
+            if (total) {
+                doc.setFontSize(11);
+                doc.text(total, 14, y);
+                y += 8;
+            }
+            y += 4;
+        }
+        // Guests
+        const guests = JSON.parse(localStorage.getItem('guests') || '[]');
+        addSection('Invited Guests', guests.map((n,i) => (i+1)+'. '+n), 'Total Invited: ' + guests.length);
+        // Families
+        let families = JSON.parse(localStorage.getItem('families') || '[]');
+        if (families.length && typeof families[0] === 'string') families = families.map(name => ({ name, invited: false }));
+        addSection('Families for Invitation', families.map((f,i) => (i+1)+'. '+f.name+(f.invited?' (Invited)':'')), 'Total Families: ' + families.length + ', Invited: ' + families.filter(f=>f.invited).length);
+        // Budgets
+        const budgets = JSON.parse(localStorage.getItem('budgets') || '[]');
+        let totalBudget = 0;
+        const budgetLines = budgets.map((b,i) => { totalBudget += parseFloat(b.amount)||0; return (i+1)+'. '+b.name+': ৳ '+parseFloat(b.amount).toLocaleString(); });
+        addSection('Budget Planning', budgetLines, 'Total Budget: ৳ ' + totalBudget.toLocaleString());
+        // Shopping
+        const shopping = JSON.parse(localStorage.getItem('shopping') || '[]');
+        addSection('Shopping To-Do List', shopping.map((s,i) => (i+1)+'. '+s.name+(s.amount?': ৳ '+parseFloat(s.amount).toLocaleString():'')+(s.done?' (Done)':'')));
+        // Gifts
+        const gifts = JSON.parse(localStorage.getItem('gifts') || '[]');
+        let moneyTotal = 0, giftCount = 0;
+        const giftLines = gifts.map((g,i) => {
+            let numeric = parseFloat(g.amount.replace(/[^\d.\-]/g, ''));
+            if (!isNaN(numeric) && g.amount.match(/^\s*\d/)) {
+                moneyTotal += numeric;
+            } else {
+                giftCount++;
+            }
+            return (i+1)+'. '+g.name+': '+g.amount;
+        });
+        addSection('Gifts & Money Received', giftLines, 'Total Money: ৳ ' + moneyTotal.toLocaleString() + ', Total Gifts: ' + giftCount);
+        doc.save('Aminul_Wedding_Sheet.pdf');
+    }
+    </script>
+</body>
+</html>
