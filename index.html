@@ -206,6 +206,7 @@
                     <button type="submit">Save Item</button>
                 </form>
                 <ul id="shoppingList"></ul>
+                <div class="count" id="shoppingTotal" style="margin-top:8px;text-align:left;color:#2d3a4b;font-weight:bold;"></div>
             </div>
     <!-- Gift/Money Received Section -->
     <div class="gift-section" style="margin-top:36px;">
@@ -219,7 +220,61 @@
             <div class="count" id="moneyTotal" style="margin-top:8px;text-align:right;color:#fff;font-weight:bold;"></div>
             <div class="count" id="giftTotal" style="margin-top:2px;text-align:right;color:#fff;font-weight:bold;"></div>
     </div>
+
+    <!-- Notes Section -->
+    <div class="notes-section" style="margin-top:36px; min-height:220px; max-width:100%;">
+        <h2 style="color:#2d3a4b;">Notes</h2>
+        <form id="noteForm" style="display:flex;gap:12px;margin-bottom:18px;flex-wrap:wrap;align-items:flex-start;">
+            <textarea id="noteInput" placeholder="Write a note..." required style="flex:1;min-width:0;min-height:60px;max-height:120px;resize:vertical;font-size:1.1rem;padding:10px 12px;border-radius:6px;border:1px solid #d1d5db;"></textarea>
+            <button type="submit">Save Note</button>
+        </form>
+        <ul id="noteList" style="padding:0;min-height:120px;max-height:180px;overflow-y:auto;display:block;background:#f7f7fa;border-radius:8px;"></ul>
+    </div>
     <script>
+        // Notes logic
+        const noteForm = document.getElementById('noteForm');
+        const noteInput = document.getElementById('noteInput');
+        const noteList = document.getElementById('noteList');
+        let notes = JSON.parse(localStorage.getItem('notes') || '[]');
+
+        function renderNotes() {
+            noteList.innerHTML = '';
+            notes.forEach((note, idx) => {
+                const li = document.createElement('li');
+                li.textContent = note;
+                // Remove button
+                const removeBtn = document.createElement('button');
+                removeBtn.textContent = 'Remove';
+                removeBtn.style.marginLeft = '12px';
+                removeBtn.style.background = '#ef4444';
+                removeBtn.style.color = '#fff';
+                removeBtn.style.border = 'none';
+                removeBtn.style.borderRadius = '4px';
+                removeBtn.style.padding = '3px 10px';
+                removeBtn.style.cursor = 'pointer';
+                removeBtn.onclick = function() {
+                    notes.splice(idx, 1);
+                    localStorage.setItem('notes', JSON.stringify(notes));
+                    renderNotes();
+                };
+                li.appendChild(removeBtn);
+                noteList.appendChild(li);
+            });
+        }
+
+        noteForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const note = noteInput.value.trim().replace(/\n/g, ' ');
+            if (note) {
+                notes.push(note);
+                localStorage.setItem('notes', JSON.stringify(notes));
+                renderNotes();
+                noteInput.value = '';
+                noteInput.focus();
+            }
+        });
+
+        renderNotes();
         // Gift/Money Received logic
         const giftForm = document.getElementById('giftForm');
         const giftNameInput = document.getElementById('giftName');
@@ -361,6 +416,7 @@ let shopping = JSON.parse(localStorage.getItem('shopping') || '[]');
 
 function renderShopping() {
     shoppingList.innerHTML = '';
+    let totalShopping = 0;
     shopping.forEach((item, idx) => {
         const li = document.createElement('li');
         li.style.display = 'flex';
@@ -401,6 +457,7 @@ function renderShopping() {
         const amountSpan = document.createElement('span');
         if (item.amount) {
             amountSpan.textContent = '৳ ' + parseFloat(item.amount).toLocaleString();
+            totalShopping += parseFloat(item.amount) || 0;
         }
         amountSpan.style.marginLeft = '16px';
         amountSpan.style.color = item.done ? '#fff' : '#374151';
@@ -424,6 +481,7 @@ function renderShopping() {
 
         shoppingList.appendChild(li);
     });
+    document.getElementById('shoppingTotal').textContent = 'Total Shopping: ৳ ' + totalShopping.toLocaleString();
 }
 
 shoppingForm.addEventListener('submit', function(e) {
