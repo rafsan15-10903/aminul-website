@@ -5,6 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aminul's Weeding</title>
     <style>
+        .shiny-name {
+            position: relative;
+            display: inline-block;
+            color: #fff;
+            z-index: 1;
+            overflow: hidden;
+        }
+        .shiny-name::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -60%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.25) 40%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0.25) 60%, rgba(255,255,255,0) 100%);
+            filter: blur(2px);
+            transform: skewX(-20deg);
+            animation: white-shine 2.2s linear infinite;
+            z-index: 2;
+        }
+        @keyframes white-shine {
+            0% { left: -60%; }
+            100% { left: 120%; }
+        }
         body {
             margin: 0;
             padding: 0;
@@ -99,7 +122,9 @@
         <div class="invitation-lines" style="margin-top:32px;">
             <div style="font-size:1.3rem;letter-spacing:1px;color:#fff;font-weight:500;">PLEASE JOIN US FOR THE WEEDING OF</div>
             <div style="height:18px;"></div>
-            <div style="font-size:2.7rem;font-weight:900;color:#fff;letter-spacing:2px;">AMINUL &amp; TANHA</div>
+            <div style="font-size:2.7rem;font-weight:900;letter-spacing:2px;">
+                <span class="shiny-name">AMINUL &amp; TANHA</span>
+            </div>
         </div>
         <div style="margin:36px auto 0 auto;max-width:340px;">
             <div style="background:#fff;border-radius:12px;box-shadow:0 2px 12px #eec3d6;padding:22px 0;text-align:center;">
