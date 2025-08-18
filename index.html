@@ -163,6 +163,9 @@
     <div class="container" style="background:#ff9800;border-radius:16px;box-shadow:0 4px 24px rgba(0,0,0,0.08);padding:32px 24px 24px 24px;max-width:500px;margin:40px auto;">
     <h1 style="color:#fff;"><span class="shiny-title">Aminul's Wedding Ceremony</span></h1>
         <p style="color:#fff;">Invite your guests and keep track of everyone you invite!</p>
+    <div class="section-note section-note-white">
+        (এইখানে আপনি বিয়েতে কত জন মানুষ দাওয়াত দিবেন তার তালিকা করে রাখতে পারেন আপনার বুঝার জন্য যে কত জনের আয়জন হবে এবং কত জন আপনি দাওয়াত করেছেন।)
+    </div>
         <form id="guestForm">
             <input type="text" id="guestName" placeholder="Enter guest name" required />
             <button type="submit">Save</button>
@@ -176,6 +179,9 @@
         <!-- Relatives' Families Section -->
         <div class="family-section" style="margin-top:36px;">
             <h2 style="color:#fff;">Family for invitation</h2>
+            <div class="section-note section-note-white">
+                (এইখানে আপনি দাওয়াতের জন্য পরিবার এর list করতে পারবেন। তারপর দাওয়াত দেয়ার পরে টিক দিয়ে রাখতে পারবেন আপনার বুঝার সুবিধার জন্য।)
+            </div>
             <form id="familyForm" style="display:flex;gap:12px;margin-bottom:18px;">
                 <input type="text" id="familyName" placeholder="Enter family name" required />
                 <button type="submit">Save Family</button>
@@ -189,6 +195,9 @@
         <!-- Budget Section -->
         <div class="budget-section" style="margin-top:36px;">
             <h2 style="color:#fff;">Budget Planning</h2>
+            <div class="section-note section-note-white">
+                (এইখানে আপনি বিয়ের টোটাল বাজেট মানে কোন কোন খাতে কতো টাকা খরচ করবেন তার একটা হিসাব করে রাখতে পারবেন)
+            </div>
             <form id="budgetForm" style="display:flex;gap:12px;margin-bottom:18px;">
                 <input type="text" id="budgetName" placeholder="Spending category (e.g. Venue, Food)" required />
                 <input type="number" id="budgetAmount" placeholder="Amount" min="0" required style="max-width:120px;" />
@@ -200,6 +209,9 @@
             <!-- Shopping To-Do List Section -->
             <div class="shopping-section" style="margin-top:36px;">
                 <h2 style="color:#2d3a4b;">Shopping To-Do List</h2>
+                <div class="section-note section-note-dark">
+                    (এইখানে আপনি কি কি শপিং করবেন টাকার পরিমান সহ একটা list আপনি করে রাখতে পারেন এবং কিনা শেষে চাইলে মার্ক করে রাখতে পারেন)
+                </div>
                 <form id="shoppingForm" style="display:flex;gap:12px;margin-bottom:18px;">
                     <input type="text" id="shoppingItem" placeholder="Item to buy" required style="flex:1;" />
                     <input type="number" id="shoppingAmount" placeholder="Amount" min="0" style="max-width:120px;" />
@@ -211,6 +223,9 @@
     <!-- Gift/Money Received Section -->
     <div class="gift-section" style="margin-top:36px;">
         <h2 style="color:#2d3a4b;">Gifts & Money Received</h2>
+        <div class="section-note section-note-dark">
+            (এইখানে আপনি বিয়েতে উঠা গিফট এবং টাকা নাম ঠিকানা সহ লিখে রাখতে পারেন। এইখানে সব কিছু auto calculation hobe)
+        </div>
         <form id="giftForm" style="display:flex;gap:12px;margin-bottom:18px;">
             <input type="text" id="giftName" placeholder="Person's name" required />
                 <input type="text" id="giftAmount" placeholder="Amount & Gift" required style="max-width:140px;" />
@@ -224,6 +239,9 @@
     <!-- Notes Section -->
     <div class="notes-section" style="margin-top:36px; min-height:220px; max-width:100%;">
         <h2 style="color:#2d3a4b;">Notes</h2>
+        <div class="section-note section-note-dark">
+            (এইখানে আপনি ইম্পরট্যান্ট কোন নোট করে রাখতে পারেন)
+        </div>
         <form id="noteForm" style="display:flex;gap:12px;margin-bottom:18px;flex-wrap:wrap;align-items:flex-start;">
             <textarea id="noteInput" placeholder="Write a note..." required style="flex:1;min-width:0;min-height:60px;max-height:120px;resize:vertical;font-size:1.1rem;padding:10px 12px;border-radius:6px;border:1px solid #d1d5db;"></textarea>
             <button type="submit">Save Note</button>
